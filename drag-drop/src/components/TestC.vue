@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ul>
+    <!-- <ul>
       <li
         v-for="node in tree"
         :key="node.id"
@@ -21,13 +21,33 @@
           </li>
         </ul>
       </li>
-    </ul>
+    </ul> -->
+    <!-- <draggable
+      v-model="tree"
+      group="people"
+      @start="drag = true"
+      @end="drag = false"
+    >
+      <div v-for="element in tree" :key="element.id">{{ element.label }}</div>
+    </draggable> -->
+
+    <draggable class="dragArea" tag="ul" :list="data" :group="{ name: 'g1' }">
+      <li v-for="el in children" :key="el.name">
+        <p>{{ el.name }}</p>
+        <nested-draggable v-if="el.children" :tasks="el.children" />
+      </li>
+    </draggable>
   </div>
 </template>
 
 <script>
+import draggable from "vuedraggable";
+
 export default {
   name: "TestC",
+  components: {
+    draggable,
+  },
   data() {
     return {
       tree: [
@@ -49,25 +69,31 @@ export default {
         },
       ],
       dragData: null,
+      structure: [
+        { name: "Prelude" },
+        { name: "Verse" },
+        { name: "Middle", children: [{ name: "Chorus" }, { name: "Verse" }] },
+        { name: "Last Chorus" },
+      ],
     };
   },
   methods: {
-    dragStartHandler(event) {
-      const nodeId = event.target.dataset.id;
-      this.dragData = this.findNodeById(this.tree, nodeId);
-    },
-    findNodeById(nodes, nodeId) {
-      for (const node of nodes) {
-        if (node.id === nodeId) {
-          return node;
-        }
-        const childNode = this.findNodeById(node.children, nodeId);
-        if (childNode) {
-          return childNode;
-        }
-      }
-      return null;
-    },
+    // dragStartHandler(event) {
+    //   const nodeId = event.target.dataset.id;
+    //   this.dragData = this.findNodeById(this.tree, nodeId);
+    // },
+    // findNodeById(nodes, nodeId) {
+    //   for (const node of nodes) {
+    //     if (node.id === nodeId) {
+    //       return node;
+    //     }
+    //     const childNode = this.findNodeById(node.children, nodeId);
+    //     if (childNode) {
+    //       return childNode;
+    //     }
+    //   }
+    //   return null;
+    // },
   },
 };
 </script>
