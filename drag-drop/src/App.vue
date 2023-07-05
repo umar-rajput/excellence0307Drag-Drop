@@ -1,17 +1,25 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app">
+    <!-- <img alt="Vue logo" src="./assets/logo.png" />
+    <HelloWorld msg="Welcome to Your Vue.js App" /> -->
+    <NodeTree />
+    <!-- <TestC></TestC> -->
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+// import HelloWorld from "./components/HelloWorld.vue";
+import NodeTree from "./components/NodeTree.vue";
+// import TestC from "./components/TestC.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    // HelloWorld,
+    NodeTree,
+    // TestC,
+  },
+};
 </script>
 
 <style>
