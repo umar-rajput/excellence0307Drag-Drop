@@ -13,9 +13,8 @@
           :data="treeData"
           :horizontal="treeOrientation == '1'"
           :collapsable="true"
-          @dragstart="dragStart($event, treeData.some_id)"
-          @node-click="nodeClick"
-          @node-mouseover="nodeClick"
+          :label-class-name="labelClassName"
+          @dragstart="dragStart($event)"
           @drop="drop($event)"
           @dragenter.prevent
           @dragover.prevent
@@ -91,6 +90,7 @@ export default {
         expand: true,
         some_id: 1,
         parentId: null,
+        key: this.some_id,
         // drag: true,
         // ondragstart: "dragStart(event)",
         children: [
@@ -157,6 +157,8 @@ export default {
           },
         ],
       }),
+      labelClassName: this.some_id,
+      id: this.treeData,
       // toggleSelect: (node, isSelected) => {
       //   isSelected
       //     ? this.selected.value.push(node.some_id)
@@ -180,20 +182,28 @@ export default {
       //   },
       //   { name: "Last Chorus", id: 3 },
       // ],
+      up: "",
     };
   },
   methods: {
-    dragStart(event, data) {
+    dragStart(event) {
       console.log("Drag start..", event);
-      console.log(data);
+      // console.log(data);
+      // console.log(this.id);
+      // console.log(event.srcElement.outerText);
       // event.preventDefault();
       // event.dataTransfer.setData("Text", event.target.id);
       // console.log("...", this.$emit.setData("Text", this.treeData.label));
       // let a =
-      // event.dataTransfer.setData("text", event.target);
       event.dataTransfer.dropEffect = "move";
       event.dataTransfer.effectAllowed = "move";
-      console.log("....", event.target);
+      // console.log("....", event.target);
+      event.dataTransfer.setData("text", event.srcElement.innerText);
+      // event.dataTransfer.setData("text", event.srcElement.outerText);
+      // console.log(this.text);
+      // event.srcElement.innerHTML = this.dropLabel;
+      this.up = event;
+      // console.log(this.up);
       // console.log("Drag start..", event);
     },
     drop(event) {
@@ -202,9 +212,28 @@ export default {
       // console.log(this.treeData.some_id);
       // console.log(this.treeData.label);
       // this.label = this.treeData.label;
-      // console.log("....", event.dataTransfer.getData("text"));
-      const itemId = event.dataTransfer.getData("text");
-      console.log(itemId);
+      console.log("....", event.dataTransfer.getData("text"));
+      let dragLabel = event.dataTransfer.getData("text");
+      console.log("dragLabel...", dragLabel);
+      let dropLabel = event.srcElement.innerText;
+      console.log("dropLabel..", dropLabel);
+      let temp = dragLabel;
+      dragLabel = dropLabel;
+      dropLabel = temp;
+      console.log("drag", dragLabel + " drop", dropLabel + " temp", temp);
+      // console.log("drop", dropLabel);
+      // console.log("temp", temp);
+
+      // let inner = event.srcElement.innerHTML;
+      event.srcElement.innerHTML = dropLabel;
+      this.up.srcElement.innerText = null;
+      // dragStart1(){
+      //   event.srcElement.innerHTML = dragLabel;
+      // }
+
+      // console.log("inner");
+      // event.target.appendChild(document.getElementById(dragLabel));
+      // console.log((this.treeData.label = dragLabel));
       // const item = this.treeData.find((item) => item.label == itemId);
       // item.this.treeData.label = this.treeData.label;
     },
